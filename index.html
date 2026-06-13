@@ -382,6 +382,62 @@ a.contact-link:hover { border-color: var(--cold); box-shadow: var(--shadow-soft)
 .footer .live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--warm); margin-right: 8px; }
 
 /* ============================================
+   WORK CARD — "more" trigger
+   ============================================ */
+.work-more {
+  margin-top: 16px; display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font); font-size: 14px; font-weight: 550; color: var(--cold); cursor: pointer;
+  background: none; border: none; padding: 0; transition: gap 0.25s var(--ease);
+}
+.work-more:hover { gap: 11px; }
+
+/* ============================================
+   MODAL
+   ============================================ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+  background: rgba(11, 18, 32, 0.5);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.32s var(--ease), visibility 0.32s var(--ease);
+}
+.modal-overlay.open { opacity: 1; visibility: visible; }
+.modal {
+  position: relative; width: 100%; max-width: 640px; max-height: 86vh; overflow-y: auto;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 22px;
+  box-shadow: 0 30px 90px rgba(11, 18, 32, 0.3);
+  transform: translateY(16px) scale(0.97); opacity: 0;
+  transition: transform 0.4s var(--ease-spring), opacity 0.32s var(--ease);
+}
+.modal-overlay.open .modal { transform: none; opacity: 1; }
+.modal-close {
+  position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border-radius: 11px;
+  border: 1px solid var(--border); background: var(--glass-strong); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; color: var(--ink-2);
+  font-size: 22px; line-height: 1; z-index: 2; transition: all 0.25s var(--ease);
+}
+.modal-close:hover { background: var(--surface); color: var(--ink); border-color: var(--border-strong); }
+.modal-body { padding: 36px 34px 32px; }
+.modal-cat { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+.modal-body h3 { font-size: clamp(22px, 3vw, 26px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; margin-top: 8px; }
+.modal-descriptor {
+  margin-top: 10px; padding-bottom: 18px; border-bottom: 1px solid var(--border);
+  font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; letter-spacing: 0.01em;
+}
+.modal-body p { margin-top: 16px; font-size: 15px; color: var(--ink-2); line-height: 1.65; }
+.modal-spec { margin-top: 24px; display: grid; grid-template-columns: 130px 1fr; gap: 11px 18px; }
+.modal-spec dt { font-size: 12.5px; font-weight: 600; color: var(--ink-3); }
+.modal-spec dd { font-size: 14px; color: var(--ink); }
+.modal-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 24px; }
+.modal-tags .tag { font-size: 11.5px; font-weight: 550; padding: 4px 10px; border-radius: 8px; background: var(--accent-soft); color: var(--cold); }
+@media (max-width: 560px) {
+  .modal-body { padding: 30px 22px 26px; }
+  .modal-spec { grid-template-columns: 100px 1fr; gap: 9px 12px; }
+}
+
+/* ============================================
    REVEAL
    ============================================ */
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
@@ -542,6 +598,32 @@ a.contact-link:hover { border-color: var(--cold); box-shadow: var(--shadow-soft)
             <span class="tag">CFD 3D</span>
             <span class="tag warm">HPC</span>
           </div>
+          <button class="work-more" type="button">
+            <span class="swap" data-fr="En savoir plus" data-en="Read more">En savoir plus</span>
+            <span class="arrow">→</span>
+          </button>
+          <div class="modal-source" hidden>
+            <span class="modal-cat swap" data-fr="Projet académique · Cranfield" data-en="Academic project · Cranfield">Projet académique · Cranfield</span>
+            <h3 class="swap" data-fr="Cavitation &amp; turbulence en pompe centrifuge" data-en="Cavitation &amp; turbulence in a centrifugal pump">Cavitation &amp; turbulence en pompe centrifuge</h3>
+            <div class="modal-descriptor swap" data-fr="CFD 3D · maillage HPC parallèle · modèle de turbulence hybride" data-en="3D CFD · parallel HPC mesh · hybrid turbulence model">CFD 3D · maillage HPC parallèle · modèle de turbulence hybride</div>
+            <p class="swap" data-fr="Projet mené à Cranfield en partenariat avec Safran Aircraft Engines : étude de l'apparition de la cavitation dans une pompe centrifuge et de son couplage avec la turbulence de l'écoulement." data-en="Project carried out at Cranfield in partnership with Safran Aircraft Engines: studying cavitation inception in a centrifugal pump and its coupling with the flow turbulence.">Projet mené à Cranfield en partenariat avec Safran Aircraft Engines : étude de l'apparition de la cavitation dans une pompe centrifuge et de son couplage avec la turbulence de l'écoulement.</p>
+            <p class="swap" data-fr="Travail réalisé sur calcul parallèle (HPC) : génération et raffinement du maillage, choix d'une stratégie de modélisation de la turbulence adaptée aux zones de chute de pression, puis post-traitement des champs de pression et de fraction volumique de vapeur pour localiser l'apparition de la cavitation." data-en="Run on parallel computing (HPC): mesh generation and refinement, selection of a turbulence-modelling strategy suited to the low-pressure regions, then post-processing of the pressure and vapour-fraction fields to locate cavitation inception.">Travail réalisé sur calcul parallèle (HPC) : génération et raffinement du maillage, choix d'une stratégie de modélisation de la turbulence adaptée aux zones de chute de pression, puis post-traitement des champs de pression et de fraction volumique de vapeur pour localiser l'apparition de la cavitation.</p>
+            <dl class="modal-spec">
+              <dt class="swap" data-fr="Contexte" data-en="Context">Contexte</dt>
+              <dd>Cranfield University × Safran AE</dd>
+              <dt class="swap" data-fr="Méthode" data-en="Method">Méthode</dt>
+              <dd class="swap" data-fr="CFD 3D, maillage HPC parallèle, turbulence hybride" data-en="3D CFD, parallel HPC mesh, hybrid turbulence">CFD 3D, maillage HPC parallèle, turbulence hybride</dd>
+              <dt class="swap" data-fr="Outils" data-en="Tools">Outils</dt>
+              <dd class="swap" data-fr="Ansys Fluent / CFX, Linux HPC, Python" data-en="Ansys Fluent / CFX, Linux HPC, Python">Ansys Fluent / CFX, Linux HPC, Python</dd>
+              <dt class="swap" data-fr="Rôle" data-en="Role">Rôle</dt>
+              <dd class="swap" data-fr="Modélisation CFD &amp; post-traitement (projet de groupe)" data-en="CFD modelling &amp; post-processing (group project)">Modélisation CFD &amp; post-traitement (projet de groupe)</dd>
+            </dl>
+            <div class="modal-tags">
+              <span class="tag">Cranfield × Safran</span>
+              <span class="tag">CFD 3D</span>
+              <span class="tag">HPC</span>
+            </div>
+          </div>
         </div>
       </article>
 
@@ -567,6 +649,32 @@ a.contact-link:hover { border-color: var(--cold); box-shadow: var(--shadow-soft)
             <span class="tag">Safran AE</span>
             <span class="tag">Ansys Fluent</span>
             <span class="tag warm">Turbomachine</span>
+          </div>
+          <button class="work-more" type="button">
+            <span class="swap" data-fr="En savoir plus" data-en="Read more">En savoir plus</span>
+            <span class="arrow">→</span>
+          </button>
+          <div class="modal-source" hidden>
+            <span class="modal-cat swap" data-fr="Mémoire de fin d'études · Safran" data-en="MSc thesis · Safran">Mémoire de fin d'études · Safran</span>
+            <h3 class="swap" data-fr="Écoulements de purge — turbine haute-pression" data-en="Purge flows — high-pressure turbine">Écoulements de purge — turbine haute-pression</h3>
+            <div class="modal-descriptor swap" data-fr="CFD 3D · Ansys Fluent · comparaison multi-points de poussée" data-en="3D CFD · Ansys Fluent · multi thrust-point comparison">CFD 3D · Ansys Fluent · comparaison multi-points de poussée</div>
+            <p class="swap" data-fr="Mémoire de fin d'études réalisé chez Safran Aircraft Engines sur les écoulements de purge en pied d'aube de turbine haute-pression — un sujet critique pour la tenue thermique des composants." data-en="MSc thesis carried out at Safran Aircraft Engines on purge flows at the high-pressure turbine blade root — a topic critical to the thermal resistance of the components.">Mémoire de fin d'études réalisé chez Safran Aircraft Engines sur les écoulements de purge en pied d'aube de turbine haute-pression — un sujet critique pour la tenue thermique des composants.</p>
+            <p class="swap" data-fr="Optimisation du maillage de la zone de purge, sélection des modèles de turbulence (approche hybride) et post-traitement comparatif entre plusieurs points de poussée moteur, puis étude d'extension de la méthodologie à d'autres architectures de turbomachine." data-en="Mesh optimisation of the purge region, turbulence-model selection (hybrid approach) and comparative post-processing across several engine thrust points, followed by a study extending the methodology to other turbomachinery architectures.">Optimisation du maillage de la zone de purge, sélection des modèles de turbulence (approche hybride) et post-traitement comparatif entre plusieurs points de poussée moteur, puis étude d'extension de la méthodologie à d'autres architectures de turbomachine.</p>
+            <dl class="modal-spec">
+              <dt class="swap" data-fr="Contexte" data-en="Context">Contexte</dt>
+              <dd>Safran Aircraft Engines · Villaroche</dd>
+              <dt class="swap" data-fr="Méthode" data-en="Method">Méthode</dt>
+              <dd class="swap" data-fr="CFD 3D, optimisation de maillage, modèles hybrides" data-en="3D CFD, mesh optimisation, hybrid models">CFD 3D, optimisation de maillage, modèles hybrides</dd>
+              <dt class="swap" data-fr="Outils" data-en="Tools">Outils</dt>
+              <dd class="swap" data-fr="Ansys Fluent, Tecplot / Paraview, Python" data-en="Ansys Fluent, Tecplot / Paraview, Python">Ansys Fluent, Tecplot / Paraview, Python</dd>
+              <dt class="swap" data-fr="Rôle" data-en="Role">Rôle</dt>
+              <dd class="swap" data-fr="Ingénieur CFD (MFE)" data-en="CFD Engineer (MSc thesis)">Ingénieur CFD (MFE)</dd>
+            </dl>
+            <div class="modal-tags">
+              <span class="tag">Safran AE</span>
+              <span class="tag">Ansys Fluent</span>
+              <span class="tag swap" data-fr="Turbine HP" data-en="HP turbine">Turbine HP</span>
+            </div>
           </div>
         </div>
       </article>
@@ -594,6 +702,32 @@ a.contact-link:hover { border-color: var(--cold); box-shadow: var(--shadow-soft)
             <span class="tag">OpenFOAM</span>
             <span class="tag warm">Motorsport</span>
           </div>
+          <button class="work-more" type="button">
+            <span class="swap" data-fr="En savoir plus" data-en="Read more">En savoir plus</span>
+            <span class="arrow">→</span>
+          </button>
+          <div class="modal-source" hidden>
+            <span class="modal-cat swap" data-fr="Projet étudiant · ESTIA" data-en="Student project · ESTIA">Projet étudiant · ESTIA</span>
+            <h3 class="swap" data-fr="Aérodynamique externe — monoplace Formula Student" data-en="External aerodynamics — Formula Student car">Aérodynamique externe — monoplace Formula Student</h3>
+            <div class="modal-descriptor swap" data-fr="CFD 3D · aileron / fond plat / diffuseur · Fluent &amp; OpenFOAM" data-en="3D CFD · wings / floor / diffuser · Fluent &amp; OpenFOAM">CFD 3D · aileron / fond plat / diffuseur · Fluent &amp; OpenFOAM</div>
+            <p class="swap" data-fr="Projet Formula Student que j'ai fondé à l'ESTIA : conception et optimisation par CFD des appendices aérodynamiques d'un monoplace de course étudiant — aileron avant/arrière, fond plat et diffuseur." data-en="Formula Student project I founded at ESTIA: CFD design and optimisation of a student race car's aerodynamic devices — front/rear wings, floor and diffuser.">Projet Formula Student que j'ai fondé à l'ESTIA : conception et optimisation par CFD des appendices aérodynamiques d'un monoplace de course étudiant — aileron avant/arrière, fond plat et diffuseur.</p>
+            <p class="swap" data-fr="Au-delà de la simulation (recherche d'appui aérodynamique et de finesse), j'ai recruté et structuré le pôle aérodynamique, coordonné une équipe pluridisciplinaire et géré l'itération conception ↔ CFD jusqu'au design final." data-en="Beyond the simulation (chasing downforce and aerodynamic efficiency), I recruited and structured the aerodynamics team, coordinated a multidisciplinary group and managed the design ↔ CFD iteration through to the final design.">Au-delà de la simulation (recherche d'appui aérodynamique et de finesse), j'ai recruté et structuré le pôle aérodynamique, coordonné une équipe pluridisciplinaire et géré l'itération conception ↔ CFD jusqu'au design final.</p>
+            <dl class="modal-spec">
+              <dt class="swap" data-fr="Contexte" data-en="Context">Contexte</dt>
+              <dd class="swap" data-fr="ESTIA (Bidart) · Formula Student" data-en="ESTIA (Bidart) · Formula Student">ESTIA (Bidart) · Formula Student</dd>
+              <dt class="swap" data-fr="Méthode" data-en="Method">Méthode</dt>
+              <dd class="swap" data-fr="CFD 3D aérodynamique externe, itérations design" data-en="3D external-aero CFD, design iterations">CFD 3D aérodynamique externe, itérations design</dd>
+              <dt class="swap" data-fr="Outils" data-en="Tools">Outils</dt>
+              <dd class="swap" data-fr="Ansys Fluent, OpenFOAM, CAO" data-en="Ansys Fluent, OpenFOAM, CAD">Ansys Fluent, OpenFOAM, CAO</dd>
+              <dt class="swap" data-fr="Rôle" data-en="Role">Rôle</dt>
+              <dd class="swap" data-fr="Co-fondateur &amp; responsable aérodynamique" data-en="Co-founder &amp; aerodynamics lead">Co-fondateur &amp; responsable aérodynamique</dd>
+            </dl>
+            <div class="modal-tags">
+              <span class="tag">ESTIA</span>
+              <span class="tag">OpenFOAM</span>
+              <span class="tag swap" data-fr="Aérodynamique externe" data-en="External aero">Aérodynamique externe</span>
+            </div>
+          </div>
         </div>
       </article>
 
@@ -619,6 +753,32 @@ a.contact-link:hover { border-color: var(--cold); box-shadow: var(--shadow-soft)
             <span class="tag swap" data-fr="Perso" data-en="Personal">Perso</span>
             <span class="tag">Fluent</span>
             <span class="tag warm">OpenFOAM</span>
+          </div>
+          <button class="work-more" type="button">
+            <span class="swap" data-fr="En savoir plus" data-en="Read more">En savoir plus</span>
+            <span class="arrow">→</span>
+          </button>
+          <div class="modal-source" hidden>
+            <span class="modal-cat swap" data-fr="Hors cadre professionnel" data-en="Outside work">Hors cadre professionnel</span>
+            <h3 class="swap" data-fr="Veille technique — projets CFD personnels" data-en="Sharpening up — personal CFD projects">Veille technique — projets CFD personnels</h3>
+            <div class="modal-descriptor swap" data-fr="CFD 3D · écoulements turbulents · stratégies de maillage &amp; modèles" data-en="3D CFD · turbulent flows · meshing strategies &amp; models">CFD 3D · écoulements turbulents · stratégies de maillage &amp; modèles</div>
+            <p class="swap" data-fr="Simulations menées en dehors du cadre professionnel pour garder la main, explorer de nouvelles approches et rester à jour sur les méthodes : écoulements turbulents, stratégies de maillage et comparaison de modèles de turbulence." data-en="Simulations run outside of work to keep my skills sharp, explore new approaches and stay current on methods: turbulent flows, meshing strategies and turbulence-model comparison.">Simulations menées en dehors du cadre professionnel pour garder la main, explorer de nouvelles approches et rester à jour sur les méthodes : écoulements turbulents, stratégies de maillage et comparaison de modèles de turbulence.</p>
+            <p class="swap" data-fr="Une démarche de veille active : tester rapidement une idée, vérifier un comportement physique, ou reproduire un cas de référence pour confronter modèles et résultats." data-en="An active way of staying sharp: quickly testing an idea, checking a physical behaviour, or reproducing a benchmark case to confront models against results.">Une démarche de veille active : tester rapidement une idée, vérifier un comportement physique, ou reproduire un cas de référence pour confronter modèles et résultats.</p>
+            <dl class="modal-spec">
+              <dt class="swap" data-fr="Contexte" data-en="Context">Contexte</dt>
+              <dd class="swap" data-fr="Projets personnels" data-en="Personal projects">Projets personnels</dd>
+              <dt class="swap" data-fr="Méthode" data-en="Method">Méthode</dt>
+              <dd class="swap" data-fr="CFD 3D, exploration maillage &amp; modèles" data-en="3D CFD, mesh &amp; model exploration">CFD 3D, exploration maillage &amp; modèles</dd>
+              <dt class="swap" data-fr="Outils" data-en="Tools">Outils</dt>
+              <dd class="swap" data-fr="Ansys Fluent, OpenFOAM, Python" data-en="Ansys Fluent, OpenFOAM, Python">Ansys Fluent, OpenFOAM, Python</dd>
+              <dt class="swap" data-fr="Rôle" data-en="Role">Rôle</dt>
+              <dd class="swap" data-fr="Auteur" data-en="Author">Auteur</dd>
+            </dl>
+            <div class="modal-tags">
+              <span class="tag swap" data-fr="Perso" data-en="Personal">Perso</span>
+              <span class="tag">Fluent</span>
+              <span class="tag">OpenFOAM</span>
+            </div>
           </div>
         </div>
       </article>
@@ -909,6 +1069,14 @@ a.contact-link:hover { border-color: var(--cold); box-shadow: var(--shadow-soft)
   </div>
 </section>
 
+<!-- ============ MODAL ============ -->
+<div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" type="button" aria-label="Fermer">&times;</button>
+    <div class="modal-body"></div>
+  </div>
+</div>
+
 <!-- ============ FOOTER ============ -->
 <footer class="footer">
   <div>© 2026 — Paul Mollies</div>
@@ -990,6 +1158,45 @@ if (window.matchMedia('(hover: hover)').matches) {
     }
   }, { passive: true });
 }
+/* ===== PROJECT MODALS ===== */
+(function(){
+  var overlay = document.getElementById('modalOverlay');
+  if (!overlay) return;
+  var body = overlay.querySelector('.modal-body');
+  var closeBtn = overlay.querySelector('.modal-close');
+  var lastFocus = null;
+
+  function openModal(src){
+    body.innerHTML = src.innerHTML;
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    lastFocus = document.activeElement;
+    closeBtn.focus();
+    overlay.querySelector('.modal').scrollTop = 0;
+  }
+  function closeModal(){
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    setTimeout(function(){ body.innerHTML = ''; }, 340);
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  document.querySelectorAll('.work-more').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      var card = btn.closest('.work-card');
+      var src = card && card.querySelector('.modal-source');
+      if (src) openModal(src);
+    });
+  });
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e){ if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+  });
+})();
 </script>
 
 </body>
